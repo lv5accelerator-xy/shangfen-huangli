@@ -18,6 +18,7 @@
         <div class="brand">上分黄历</div>
         <div class="eyebrow">今日战局 · 娱乐占测</div>
         <div class="date" id="todayText">正在起盘…</div>
+        <div class="lunar-date" id="lunarText">农历正在换算…</div>
       </div>
       <button class="pill-btn" id="profileBtn" type="button">命盘</button>
     </header>
@@ -42,6 +43,23 @@
       <span id="profileTipText">未启用个性化命宫 · 点此设置</span>
       <span class="chev">›</span>
     </button>
+
+    <section class="metaphysics card" aria-labelledby="metaphysicsTitle">
+      <div class="metaphysics-head">
+        <div>
+          <div class="eyebrow">传统历法 · 今日玄历</div>
+          <div class="metaphysics-title" id="metaphysicsTitle">今日命理速览</div>
+        </div>
+        <div class="zodiac-badge" id="zodiacBadge">--</div>
+      </div>
+      <div class="meta-grid">
+        <div class="meta-item"><span>农历</span><strong id="metaLunar">--</strong></div>
+        <div class="meta-item"><span>纳音</span><strong id="metaNayin">--</strong></div>
+        <div class="meta-item"><span>冲合</span><strong id="metaChong">--</strong></div>
+        <div class="meta-item"><span>五行</span><strong id="metaWuxing">--</strong></div>
+      </div>
+      <div class="meta-relation" id="metaRelation">正在推演日支与当前时支…</div>
+    </section>
 
     <section>
       <div class="section-title">现在打什么</div>
@@ -127,5 +145,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="./app.js"></script>
+  <script src="./extras.js"></script>
 </body>
 </html>
