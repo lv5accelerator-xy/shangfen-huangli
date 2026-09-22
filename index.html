@@ -143,8 +143,45 @@
     </section>
   </div>
 
+  <div class="onboarding-backdrop" id="onboardingModal" hidden>
+    <section class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle">
+      <div class="onboarding-seal">命</div>
+      <div class="eyebrow">首次起盘 · 本命资料</div>
+      <h2 id="onboardingTitle">先安命盘，再看今日战局</h2>
+      <p class="onboarding-sub">为了让排位 / ARAM / TFT 的时辰判断带上你的本命权重，需要先填写出生日期和出生时间。资料只保存在当前浏览器，不会上传到服务器。</p>
+
+      <div class="onboarding-form card">
+        <label class="field">
+          <strong>出生日期（公历）</strong>
+          <input class="birth-input" id="onboardingBirthDate" type="date" required />
+          <small>会自动换算为农历月份，用于基础命宫推算。</small>
+        </label>
+        <div class="divider"></div>
+        <label class="field">
+          <strong>出生时间</strong>
+          <input class="birth-input" id="onboardingBirthTime" type="time" required />
+          <small>不知道精确分钟也没关系，选择大致时间即可换算十二时辰。</small>
+        </label>
+      </div>
+
+      <div class="onboarding-preview card">
+        <span class="mini-seal">盘</span>
+        <div>
+          <div class="ming-caption">填写后将启用</div>
+          <div class="onboarding-preview-title">农历生月 · 出生时辰 · 命宫地支</div>
+          <div class="ming-rule">当前版本使用轻量命宫权重参与娱乐评分；完整紫微十四主星与八字四柱会在后续版本扩展。</div>
+        </div>
+      </div>
+
+      <button class="save-btn" id="onboardingSaveBtn" type="button">安命盘 · 开始看运势</button>
+      <div class="onboarding-error" id="onboardingError" aria-live="polite"></div>
+      <div class="modal-note">提示：本项目用于游戏娱乐与传统文化体验，不代表科学预测，也不保证游戏胜负。</div>
+    </section>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="./app.js"></script>
   <script src="./extras.js"></script>
+  <script src="./onboarding.js"></script>
 </body>
 </html>

@@ -211,3 +211,164 @@ select { width: 100%; margin-top: 11px; padding: 13px 14px; border: 1px solid rg
 @media (min-width: 700px) {
   .meta-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
 }
+
+
+/* v0.3 · desktop feng-shui artwork */
+@media (min-width: 1000px) {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -4;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg,
+        rgba(13,11,10,.10) 0%,
+        rgba(13,11,10,.20) 19%,
+        rgba(13,11,10,.76) 36%,
+        rgba(13,11,10,.92) 50%,
+        rgba(13,11,10,.76) 64%,
+        rgba(13,11,10,.20) 81%,
+        rgba(13,11,10,.10) 100%),
+      url("./assets/fengshui-bg.webp") center top / 100vw auto no-repeat;
+    opacity: .94;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(13,11,10,.12) 0%, rgba(13,11,10,.28) 42%, rgba(13,11,10,.04) 74%);
+  }
+  .shell {
+    position: relative;
+  }
+}
+
+/* first-run chart gate */
+.chart-gated {
+  overflow: hidden;
+}
+.chart-gated .shell {
+  filter: blur(9px);
+  opacity: .20;
+  pointer-events: none;
+  user-select: none;
+  transform: scale(.995);
+}
+.onboarding-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(178,123,55,.12), transparent 34%),
+    rgba(6,5,4,.82);
+  backdrop-filter: blur(14px);
+}
+.onboarding-backdrop[hidden] {
+  display: none;
+}
+.onboarding-card {
+  width: min(100%, 520px);
+  max-height: min(92vh, 760px);
+  overflow: auto;
+  position: relative;
+  padding: 30px 22px 24px;
+  border-radius: 24px;
+  border: 1px solid rgba(229,187,101,.18);
+  background:
+    linear-gradient(150deg, rgba(43,31,22,.98), rgba(15,12,10,.99) 62%);
+  box-shadow: 0 28px 100px rgba(0,0,0,.62);
+}
+.onboarding-card::before {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  right: -92px;
+  top: -112px;
+  border: 1px solid rgba(226,182,95,.10);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 22px rgba(226,182,95,.018),
+    inset 0 0 0 46px rgba(226,182,95,.012);
+}
+.onboarding-seal {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 20px;
+  border: 1px solid rgba(216,94,77,.66);
+  border-radius: 9px;
+  color: var(--red);
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 23px;
+  transform: rotate(-3deg);
+}
+.onboarding-card h2 {
+  margin: 8px 0 0;
+  color: #fff0d6;
+  font-size: clamp(25px, 7vw, 31px);
+  line-height: 1.2;
+}
+.onboarding-sub {
+  margin: 13px 0 18px;
+  color: #9b8c7d;
+  font-size: 12px;
+  line-height: 1.75;
+}
+.onboarding-form {
+  padding: 3px 18px;
+  box-shadow: none;
+}
+.birth-input {
+  width: 100%;
+  margin-top: 11px;
+  padding: 13px 14px;
+  color: #e7d4b8;
+  background: #161210;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px;
+  outline: none;
+  color-scheme: dark;
+}
+.birth-input:focus {
+  border-color: rgba(226,182,95,.34);
+  box-shadow: 0 0 0 3px rgba(226,182,95,.045);
+}
+.onboarding-preview {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+  padding: 16px;
+  box-shadow: none;
+}
+.onboarding-preview-title {
+  margin-top: 3px;
+  color: #efd298;
+  font-size: 14px;
+  font-weight: 800;
+}
+.onboarding-error {
+  min-height: 18px;
+  margin-top: 10px;
+  color: #e48a78;
+  text-align: center;
+  font-size: 11px;
+}
+@media (max-width: 699px) {
+  .onboarding-backdrop {
+    align-items: end;
+    padding: 10px;
+  }
+  .onboarding-card {
+    width: 100%;
+    border-radius: 24px 24px 16px 16px;
+    padding-bottom: calc(22px + env(safe-area-inset-bottom));
+  }
+}
