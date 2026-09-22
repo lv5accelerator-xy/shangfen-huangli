@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0b0a" />
+  <meta name="description" content="基于干支、五行与命宫意象的游戏娱乐黄历：查看今天适合排位、ARAM 还是 TFT，以及十二时辰上分窗口。" />
+  <title>上分黄历</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+
+  <main class="shell" id="app" aria-live="polite">
+    <header class="topbar">
+      <div>
+        <div class="brand">上分黄历</div>
+        <div class="eyebrow">今日战局 · 娱乐占测</div>
+        <div class="date" id="todayText">正在起盘…</div>
+      </div>
+      <button class="pill-btn" id="profileBtn" type="button">命盘</button>
+    </header>
+
+    <section class="hero card" id="heroCard">
+      <div class="seal" id="pillarText">--</div>
+      <div class="hero-main">
+        <div class="hero-kicker">此刻宜玩</div>
+        <h1 class="hero-title" id="bestModeName">起盘中</h1>
+        <div class="hero-score"><span id="bestModeScore">--</span><small>/ 100</small></div>
+        <div class="hero-label" id="bestModeLabel">正在计算今日时运</div>
+      </div>
+      <div class="hero-foot">
+        <span id="currentHourText">--</span>
+        <span id="fengshuiText">--</span>
+      </div>
+      <button class="share-btn" id="shareBtn" type="button">分享今日上分签</button>
+    </section>
+
+    <button class="profile-tip card" id="profileTip" type="button">
+      <span class="dot dim" id="profileDot"></span>
+      <span id="profileTipText">未启用个性化命宫 · 点此设置</span>
+      <span class="chev">›</span>
+    </button>
+
+    <section>
+      <div class="section-title">现在打什么</div>
+      <div class="mode-list" id="modeList"></div>
+    </section>
+
+    <section>
+      <div class="section-title row-title">
+        <span>十二时辰</span>
+        <span class="small">切换模式看全天窗口</span>
+      </div>
+      <div class="tabs" role="tablist" aria-label="游戏模式">
+        <button class="tab active" data-mode="ranked" type="button">排位</button>
+        <button class="tab" data-mode="aram" type="button">ARAM</button>
+        <button class="tab" data-mode="tft" type="button">TFT</button>
+      </div>
+      <div class="hours-grid" id="hoursGrid"></div>
+    </section>
+
+    <section class="best-box card">
+      <div class="best-title" id="bestTitle">排位黄金三时辰</div>
+      <div id="bestRows"></div>
+    </section>
+
+    <section class="culture card">
+      <div class="culture-mark">☯</div>
+      <div>
+        <div class="culture-title">今天怎么看？</div>
+        <p>干支、五行、六合、六冲和命宫是传统文化素材；游戏模式与分数是为“上分黄历”设计的娱乐映射。</p>
+      </div>
+    </section>
+
+    <footer class="disclaimer">
+      <div>本页面仅用于娱乐与传统文化体验，不代表科学预测，也不能保证游戏胜负。</div>
+      <div>真正影响排位结果的，还是状态、阵容、网络和队友。</div>
+    </footer>
+  </main>
+
+  <div class="modal-backdrop" id="profileModal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">紫微意象 · 个性化</div>
+          <h2 id="profileTitle">安一个命宫</h2>
+        </div>
+        <button class="close-btn" id="closeProfileBtn" type="button" aria-label="关闭">×</button>
+      </div>
+      <p class="modal-sub">这里只使用紫微斗数最基础的安命宫规则，为十二时辰加入轻量“本命权重”，不冒充完整排盘。</p>
+
+      <div class="form-card card">
+        <label class="switch-row field">
+          <span>
+            <strong>启用命宫加成</strong>
+            <small>关闭后只看今日干支与时辰</small>
+          </span>
+          <input id="profileEnabled" class="toggle" type="checkbox" />
+        </label>
+        <div class="divider"></div>
+        <label class="field">
+          <strong>农历出生月</strong>
+          <select id="lunarMonth"></select>
+          <small>这里填写农历月份，不是身份证上的公历月份。</small>
+        </label>
+        <label class="field">
+          <strong>出生时辰</strong>
+          <select id="birthHour"></select>
+        </label>
+      </div>
+
+      <div class="ming card">
+        <div class="mini-seal">命</div>
+        <div>
+          <div class="ming-caption">当前推得</div>
+          <div class="ming-title" id="mingGongText">命宫在寅宫</div>
+          <div class="ming-rule">寅起正月，顺数生月；由生月宫起子时，逆数至生时。</div>
+        </div>
+      </div>
+
+      <button class="save-btn" id="saveProfileBtn" type="button">保存命盘设置</button>
+      <div class="modal-note">完整紫微斗数还涉及农历日期、年干、五行局与十四主星等。本版只取命宫地支作为娱乐个性化权重。</div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js"></script>
+</body>
+</html>
