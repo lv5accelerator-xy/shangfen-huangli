@@ -17,6 +17,8 @@ html { background: var(--bg); }
 body {
   margin: 0;
   min-height: 100vh;
+  position: relative;
+  isolation: isolate;
   background:
     radial-gradient(circle at 12% -10%, rgba(190,129,47,.08), transparent 34%),
     radial-gradient(circle at 95% 15%, rgba(132,47,35,.08), transparent 28%),
@@ -219,7 +221,7 @@ select { width: 100%; margin-top: 11px; padding: 13px 14px; border: 1px solid rg
     content: "";
     position: fixed;
     inset: 0;
-    z-index: -4;
+    z-index: 0;
     pointer-events: none;
     background:
       linear-gradient(90deg,
@@ -231,18 +233,32 @@ select { width: 100%; margin-top: 11px; padding: 13px 14px; border: 1px solid rg
         rgba(13,11,10,.20) 81%,
         rgba(13,11,10,.10) 100%),
       url("./assets/fengshui-bg.webp") center top / 100vw auto no-repeat;
-    opacity: .94;
+    opacity: 1;
+    filter: saturate(.96) contrast(1.05);
   }
   body::after {
     content: "";
     position: fixed;
     inset: 0;
-    z-index: -3;
+    z-index: 1;
     pointer-events: none;
-    background: radial-gradient(ellipse at center, rgba(13,11,10,.12) 0%, rgba(13,11,10,.28) 42%, rgba(13,11,10,.04) 74%);
+    background:
+      linear-gradient(90deg,
+        rgba(13,11,10,.02) 0%,
+        rgba(13,11,10,.06) 18%,
+        rgba(13,11,10,.70) 34%,
+        rgba(13,11,10,.88) 50%,
+        rgba(13,11,10,.70) 66%,
+        rgba(13,11,10,.06) 82%,
+        rgba(13,11,10,.02) 100%),
+      linear-gradient(180deg, rgba(13,11,10,.02) 0%, rgba(13,11,10,.18) 76%, rgba(13,11,10,.82) 100%);
   }
   .shell {
     position: relative;
+    z-index: 2;
+  }
+  .ambient {
+    z-index: 1;
   }
 }
 
