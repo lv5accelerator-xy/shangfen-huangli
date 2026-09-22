@@ -131,3 +131,83 @@ select { width: 100%; margin-top: 11px; padding: 13px 14px; border: 1px solid rg
   .modal-backdrop { align-items: center; }
   .modal { border-radius: 24px; }
 }
+
+
+/* v0.2 · 农历与今日玄历 */
+.lunar-date {
+  margin-top: 5px;
+  font-size: 11px;
+  color: #9f8f7d;
+  letter-spacing: .3px;
+}
+.metaphysics {
+  margin-top: 12px;
+  padding: 18px;
+  box-shadow: none;
+  border-color: rgba(226,182,95,.12);
+  background:
+    linear-gradient(145deg, rgba(45,34,25,.62), rgba(24,20,17,.92));
+}
+.metaphysics-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.metaphysics-title {
+  margin-top: 5px;
+  font-size: 16px;
+  font-weight: 850;
+  color: #f1dfbf;
+}
+.zodiac-badge {
+  flex: 0 0 auto;
+  min-width: 56px;
+  height: 34px;
+  padding: 0 12px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(216,94,77,.22);
+  background: rgba(216,94,77,.055);
+  color: #dca074;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 12px;
+}
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 9px;
+}
+.meta-item {
+  min-height: 70px;
+  padding: 12px 13px;
+  border: 1px solid rgba(255,255,255,.055);
+  border-radius: 13px;
+  background: rgba(11,9,8,.26);
+}
+.meta-item span {
+  display: block;
+  color: #74695f;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.meta-item strong {
+  display: block;
+  margin-top: 7px;
+  color: #e9d8bd;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.meta-relation {
+  margin-top: 11px;
+  padding-top: 11px;
+  border-top: 1px solid rgba(255,255,255,.055);
+  color: #8d8073;
+  font-size: 10px;
+  line-height: 1.6;
+}
+@media (min-width: 700px) {
+  .meta-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+}
