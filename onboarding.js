@@ -14,13 +14,14 @@
       const raw = localStorage.getItem(PROFILE_KEY);
       if (!raw) return false;
       const p = JSON.parse(raw);
-      return !!(p && p.enabled && Number(p.lunarMonth) >= 1 && Number(p.lunarMonth) <= 12 && Number.isInteger(Number(p.birthHourIndex)));
+      return window.HuangliCalendar.validProfile(p);
     } catch (_) {
       return false;
     }
   }
 
   function hourIndexFromTime(value) {
+    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(value)) return null;
     const hour = Number(String(value).split(':')[0]);
     if (!Number.isFinite(hour)) return null;
     return hour === 23 ? 0 : Math.floor((hour + 1) / 2) % 12;
@@ -32,6 +33,7 @@
     const date = new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
     try {
       const fmt = new Intl.DateTimeFormat('zh-CN-u-ca-chinese', {month:'long'});
+      if (fmt.resolvedOptions().calendar !== 'chinese') return null;
       const monthText = fmt.formatToParts(date).find(p => p.type === 'month')?.value || fmt.format(date);
       const normalized = monthText.replace(/^闰/, '');
       if (MONTH_MAP[normalized]) return MONTH_MAP[normalized];
@@ -44,6 +46,8 @@
   function openGate() {
     document.body.classList.add('chart-gated');
     $('onboardingModal').hidden = false;
+    $('app').inert = true;
+    $('onboardingBirthDate').focus();
     const maxDate = new Date();
     const iso = [
       maxDate.getFullYear(),
@@ -66,6 +70,9 @@
       return;
     }
 
+    if (!window.HuangliCalendar.parse(birthDate) || birthDate > window.HuangliCalendar.key(new Date())) {
+      showError('出生日期须在 1900 年至今天之间。'); return;
+    }
     const lunarMonth = lunarMonthFromDate(birthDate);
     const birthHourIndex = hourIndexFromTime(birthTime);
 
@@ -84,11 +91,14 @@
       updatedAt: new Date().toISOString()
     };
 
-    localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+    try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); }
+    catch (_) { showError('无法保存命盘，请允许浏览器存储后重试。'); return; }
     showError('');
     document.body.classList.remove('chart-gated');
     $('onboardingModal').hidden = true;
-    location.reload();
+    $('app').inert = false;
+    document.dispatchEvent(new Event('reading-date-change'));
+    $('profileBtn').focus();
   }
 
   if (!hasValidProfile()) {

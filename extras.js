@@ -58,6 +58,7 @@
         month: 'long',
         day: 'numeric'
       });
+      if (fmt.resolvedOptions().calendar !== 'chinese') throw new Error('Unsupported calendar');
       const parts = fmt.formatToParts(date);
       const pick = (type) => parts.find(p => p.type === type)?.value || '';
       const yearName = pick('yearName');
@@ -87,7 +88,7 @@
   }
 
   function renderExtras() {
-    const now = new Date();
+    const now = window.HuangliCalendar.date();
     const lunar = lunarInfo(now);
     const pillar = dayPillar(now);
     const hour = hourBranch(now);
@@ -107,12 +108,14 @@
     if ($('metaWuxing')) $('metaWuxing').textContent = `日主${dayElement} · ${hour}时${hourElement}`;
     if ($('metaRelation')) {
       const relationText = relation === '平'
-        ? `当前${hour}时与今日${pillar.branch}日无明显六合、六冲或三合关系。`
-        : `当前${hour}时与今日${pillar.branch}日形成「${relation}」关系，已作为时辰评分的一部分。`;
+        ? `${hour}时与所选日${pillar.branch}日无明显六合、六冲或三合关系。`
+        : `${hour}时与所选日${pillar.branch}日形成「${relation}」关系，已作为时辰评分的一部分。`;
       $('metaRelation').textContent = relationText;
     }
   }
 
+  document.addEventListener('reading-date-change', renderExtras);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) renderExtras(); });
   renderExtras();
   setInterval(renderExtras, 60 * 1000);
 })();

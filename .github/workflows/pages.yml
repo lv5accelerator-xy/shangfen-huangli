@@ -24,6 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Verify calendar flows
+        run: node --test tests/calendar.test.cjs
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

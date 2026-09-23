@@ -23,6 +23,7 @@
   const LIUHE = new Set(['子丑','丑子','寅亥','亥寅','卯戌','戌卯','辰酉','酉辰','巳申','申巳','午未','未午']);
   const CHONG = new Set(['子午','午子','丑未','未丑','寅申','申寅','卯酉','酉卯','辰戌','戌辰','巳亥','亥巳']);
   const SANHE_GROUPS = [new Set(['申','子','辰']),new Set(['亥','卯','未']),new Set(['寅','午','戌']),new Set(['巳','酉','丑'])];
+  const calendar = window.HuangliCalendar;
   const PROFILE_KEY = 'shangfenHuangliProfileV1';
 
   let selectedMode = 'ranked';
@@ -82,7 +83,7 @@
       const raw = localStorage.getItem(PROFILE_KEY);
       if (!raw) return null;
       const p = JSON.parse(raw);
-      if (p && p.enabled && p.lunarMonth && Number.isInteger(p.birthHourIndex)) {
+      if (calendar.validProfile(p) && p.enabled) {
         return {...p, mingGongBranch:calcMingGongBranch(p.lunarMonth,p.birthHourIndex)};
       }
     } catch (_) {}
@@ -92,13 +93,13 @@
   function getStoredProfileForm() {
     try {
       const raw = localStorage.getItem(PROFILE_KEY);
-      if (raw) return JSON.parse(raw);
+      if (raw) { const p = JSON.parse(raw); if (calendar.validProfile(p)) return p; }
     } catch (_) {}
     return {enabled:false,lunarMonth:1,birthHourIndex:0};
   }
 
   function scoreLabel(score,modeKey) {
-    if (score >= 86) return modeKey === 'ranked' ? '大吉 · 冲�n' : '大吉 · 开玩';
+    if (score >= 86) return modeKey === 'ranked' ? '大吉 · 冲分' : '大吉 · 开玩';
     if (score >= 74) return modeKey === 'ranked' ? '吉 · 可排' : '吉 · 很合适';
     if (score >= 62) return '平吉 · 稳着来';
     if (score >= 50) return modeKey === 'ranked' ? '平 · 少排' : '平 · 随缘玩';
@@ -139,7 +140,7 @@
     const slots = HOUR_LABELS.map((h,index) => {
       const scores = {};
       Object.values(MODES).forEach(mode => { scores[mode.key] = scoreMode({pillar,hourBranch:h.branch,mode,profile}); });
-      return {...h,index,current:index===nowIdx,scores};
+      return {...h,index,current:calendar.key(date)===calendar.key(new Date()) && index===nowIdx,scores};
     });
     const bestByMode = {};
     Object.values(MODES).forEach(mode => {
@@ -160,10 +161,19 @@
   }
 
   function render() {
-    const now = new Date();
+    const now = calendar.date();
+    const isToday = calendar.key(now) === calendar.key(new Date());
     const profile = getProfile();
     reading = buildDayReading(now,profile);
     $('todayText').textContent = formatDate(now);
+    $('readingDate').value = calendar.key(now);
+    $('prevDate').disabled = calendar.key(now) === '1900-01-01';
+    $('nextDate').disabled = calendar.key(now) === '2100-12-31';
+    $('heroKicker').textContent = isToday ? '此刻宜玩' : '所选日 · 同时辰推荐';
+    $('modesTitle').textContent = isToday ? '现在打什么' : '所选日同时辰打什么';
+    $('calendarNote').textContent = `按设备本地时间（${Intl.DateTimeFormat().resolvedOptions().timeZone}）计算；${isToday ? '每分钟自动更新' : '预览采用当前钟点，不是实时运势'}。子时含当日 00–01 时与 23–24 时，日柱按零点换日。`;
+    $('metaphysicsTitle').textContent = isToday ? '今日命理速览' : '所选日命理速览';
+    $('shareBtn').textContent = isToday ? '分享今日上分签' : '分享这天的上分签';
     $('pillarText').textContent = reading.pillar.text;
     $('bestModeName').textContent = reading.bestMode.name;
     $('bestModeScore').textContent = reading.bestMode.score;
@@ -195,7 +205,7 @@
 
   function renderModeSection() {
     if (!reading) return;
-    document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('active',tab.dataset.mode === selectedMode));
+    document.querySelectorAll('.tab').forEach(tab => { const active = tab.dataset.mode === selectedMode; tab.classList.toggle('active',active); tab.setAttribute('aria-selected', String(active)); });
     $('hoursGrid').innerHTML = reading.slots.map(slot => {
       const score = slot.scores[selectedMode];
       return `<article class="hour card ${scoreTone(score)} ${slot.current?'current':''}">
@@ -229,11 +239,15 @@
     fillProfileForm();
     $('profileModal').hidden = false;
     document.body.style.overflow = 'hidden';
+    $('app').inert = true;
+    $('closeProfileBtn').focus();
   }
 
   function closeProfile() {
     $('profileModal').hidden = true;
     document.body.style.overflow = '';
+    $('app').inert = false;
+    $('profileBtn').focus();
   }
 
   function saveProfile() {
@@ -242,7 +256,8 @@
       lunarMonth:Number($('lunarMonth').value),
       birthHourIndex:Number($('birthHour').value)
     };
-    localStorage.setItem(PROFILE_KEY,JSON.stringify(p));
+    try { localStorage.setItem(PROFILE_KEY,JSON.stringify(p)); }
+    catch (_) { showToast('无法保存，请允许浏览器存储后重试'); return; }
     closeProfile();
     render();
     showToast('命盘设置已保存');
@@ -250,9 +265,10 @@
 
   async function shareReading() {
     if (!reading) return;
+    render();
     const best = reading.bestMode;
     const bestSlot = reading.bestByMode[best.key][0];
-    const text = `上分黄历｜${formatDate(new Date())}\n此刻宜玩：${best.name} ${best.score}分（${best.label}）\n今日黄金时辰：${bestSlot.label} ${bestSlot.range}`;
+    const text = `上分黄历｜${formatDate(calendar.date())}\n所选日同时辰推荐：${best.name} ${best.score}分（${best.label}）\n当日黄金时辰：${bestSlot.label} ${bestSlot.range}`;
     try {
       if (navigator.share) {
         await navigator.share({title:'上分黄历',text,url:location.href});
@@ -289,6 +305,13 @@
   $('shareBtn').addEventListener('click',shareReading);
   document.addEventListener('keydown',(e)=>{ if (e.key === 'Escape' && !$('profileModal').hidden) closeProfile(); });
 
+  $('readingDate').addEventListener('change', () => { if (!calendar.select($('readingDate').value)) { showToast('请选择 1900–2100 年间的有效日期'); render(); } });
+  for (const [id,step] of [['prevDate',-1],['nextDate',1]]) $(id).addEventListener('click', () => {
+    const date = calendar.date(); date.setDate(date.getDate()+step); calendar.select(calendar.key(date));
+  });
+  $('todayBtn').addEventListener('click', () => calendar.select(calendar.key(new Date())));
+  document.addEventListener('reading-date-change', render);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
   render();
   setInterval(render, 60 * 1000);
 })();
