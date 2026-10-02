@@ -7,6 +7,18 @@
   <meta name="description" content="基于干支、五行与命宫意象的游戏娱乐黄历：查看今天适合排位、ARAM 还是 TFT，以及十二时辰上分窗口。" />
   <title>上分黄历</title>
   <link rel="stylesheet" href="./styles.css?v=6" />
+  <style>
+    /* ai-fortune-inline */
+    .ai-fortune{margin-top:12px;padding:18px;border-color:rgba(226,182,95,.18);background:linear-gradient(145deg,rgba(39,29,22,.94),rgba(20,17,15,.96))}
+    .ai-fortune-head{display:flex;justify-content:space-between;gap:16px}.ai-fortune h2{margin:5px 0 0;color:#f7e6c8;font-size:20px}
+    .ai-status{padding:6px 9px;border-radius:999px;background:rgba(226,182,95,.06);color:#d9ba79;font-size:9px}
+    .ai-summary{margin:15px 0 0;color:#d6c4ae;font-size:13px;line-height:1.75}.ai-tips{display:grid;gap:8px;margin-top:13px}
+    .ai-tip{display:grid;grid-template-columns:24px 1fr;gap:9px;padding:10px 11px;border-radius:12px;background:rgba(8,7,6,.20)}
+    .ai-tip span{color:#d6ad61;font-size:9px;font-weight:800}.ai-tip p{margin:0;color:#a99b8c;font-size:11px;line-height:1.55}
+    .ai-fortune-foot{display:flex;justify-content:space-between;gap:12px;margin-top:14px;padding-top:13px;color:#746a61;font-size:9px;line-height:1.5}
+    .ai-refresh-btn{border:0;border-radius:10px;padding:8px 10px;background:rgba(226,182,95,.07);color:#dec082;font-size:10px}.ai-privacy{margin-top:10px;color:#675f58;font-size:9px;line-height:1.55}
+    @media(max-width:480px){.ai-fortune-foot{flex-direction:column}.ai-refresh-btn{width:100%}}
+  </style>
 </head>
 <body>
   <div class="desktop-wallpaper" aria-hidden="true">
