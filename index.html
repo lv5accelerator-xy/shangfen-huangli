@@ -6,11 +6,11 @@
   <meta name="theme-color" content="#0d0b0a" />
   <meta name="description" content="基于干支、五行与命宫意象的游戏娱乐黄历：查看今天适合排位、ARAM 还是 TFT，以及十二时辰上分窗口。" />
   <title>上分黄历</title>
-  <link rel="stylesheet" href="./styles.css?v=5" />
+  <link rel="stylesheet" href="./styles.css?v=6" />
 </head>
 <body>
   <div class="desktop-wallpaper" aria-hidden="true">
-    <img src="./assets/fengshui-bg.svg?v=5" alt="" decoding="async" fetchpriority="high" />
+    <img src="./assets/fengshui-bg.svg?v=6" alt="" decoding="async" fetchpriority="high" />
   </div>
   <div class="ambient ambient-a"></div>
   <div class="ambient ambient-b"></div>
@@ -47,6 +47,23 @@
         <span id="fengshuiText">--</span>
       </div>
       <button class="share-btn" id="shareBtn" type="button">分享今日上分签</button>
+    </section>
+
+    <section class="ai-fortune card" aria-labelledby="aiFortuneTitle">
+      <div class="ai-fortune-head">
+        <div>
+          <div class="eyebrow">AI READY · 今日上分签</div>
+          <h2 id="aiFortuneTitle">智能解读</h2>
+        </div>
+        <span class="ai-status" id="aiFortuneStatus">本地解读</span>
+      </div>
+      <p class="ai-summary" id="aiFortuneSummary">正在结合今日黄历与模式评分生成建议…</p>
+      <div class="ai-tips" id="aiFortuneTips"></div>
+      <div class="ai-fortune-foot">
+        <span id="aiFortuneSource">默认使用本地规则；接入安全后端后可切换为 Dify / 大模型解读。</span>
+        <button class="ai-refresh-btn" id="aiRefreshBtn" type="button">重新解签</button>
+      </div>
+      <div class="ai-privacy">隐私：AI 数据只包含日期、日柱、当前时辰、模式分数、黄金时辰与命宫地支；不会发送出生日期或出生时间。</div>
     </section>
 
     <button class="profile-tip card" id="profileTip" type="button">
@@ -191,9 +208,10 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="./calendar.js?v=5"></script>
-  <script src="./app.js?v=5"></script>
-  <script src="./extras.js?v=5"></script>
-  <script src="./onboarding.js?v=5"></script>
+  <script src="./calendar.js?v=6"></script>
+  <script src="./app.js?v=6"></script>
+  <script src="./ai-fortune.js?v=6"></script>
+  <script src="./extras.js?v=6"></script>
+  <script src="./onboarding.js?v=6"></script>
 </body>
 </html>
