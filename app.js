@@ -160,6 +160,42 @@
     return String(value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
   }
 
+  function publishReading(date, profile, isToday) {
+    if (!reading) return;
+    const goldenHours = {};
+    Object.entries(reading.bestByMode).forEach(([key, rows]) => {
+      goldenHours[key] = rows.map(item => ({label:item.label, range:item.range, score:item.score}));
+    });
+    window.HuangliReading = {
+      version: 1,
+      date: calendar.key(date),
+      isToday: !!isToday,
+      pillar: reading.pillar.text,
+      currentHour: {
+        branch: reading.currentHour.branch,
+        label: reading.currentHour.label,
+        range: reading.currentHour.range
+      },
+      bestMode: {
+        key: reading.bestMode.key,
+        name: reading.bestMode.name,
+        score: reading.bestMode.score,
+        label: reading.bestMode.label
+      },
+      modes: reading.modes.map(item => ({
+        key:item.key,
+        name:item.name,
+        score:item.score,
+        label:item.label,
+        desc:item.desc
+      })),
+      goldenHours,
+      fengshui: {...reading.fengshui},
+      profile: profile ? {mingGongBranch: profile.mingGongBranch} : null
+    };
+    document.dispatchEvent(new Event('huangli-reading'));
+  }
+
   function render() {
     const now = calendar.date();
     const isToday = calendar.key(now) === calendar.key(new Date());
@@ -201,6 +237,7 @@
         </div>
       </article>`).join('');
     renderModeSection();
+    publishReading(now, profile, isToday);
   }
 
   function renderModeSection() {
