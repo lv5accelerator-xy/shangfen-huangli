@@ -1,6 +1,6 @@
 # 上分黄历 — 开发约定
 
-本仓库是原生 HTML/CSS/JavaScript 娱乐工具。保留现有 calendar.js、app.js、onboarding.js、extras.js、ai-fortune.js 的职责；不迁入 React、Unity 或 Godot。
+本仓库是原生 HTML/CSS/JavaScript 娱乐工具。保留现有 calendar.js、app.js、onboarding.js、extras.js、ai-fortune.js 的职责；不迁入 React、Unity 或 Godot。只使用当前个人 ChatGPT/Codex 账号。
 
 - 开始任务先读 README.md 和 CODEX_HANDOFF.md，检查分支及工作区；先运行 `node --test tests/calendar.test.cjs` 建立基线。
 - 日期、时辰按设备本地时区，零点换日；出生信息和偏好只在本地存储。涉及日期、首次引导或存储变化时增加实际行为回归。
