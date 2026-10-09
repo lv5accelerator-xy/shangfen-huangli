@@ -1,0 +1,34 @@
+name: Calendar PR checks
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: calendar-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Check runtime syntax
+        run: |
+          node --check app.js
+          node --check calendar.js
+          node --check onboarding.js
+          node --check extras.js
+          node --check ai-fortune.js
+      - name: Verify calendar and recovery flows
+        run: node --test tests/calendar.test.cjs
