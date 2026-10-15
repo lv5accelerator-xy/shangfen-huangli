@@ -31,7 +31,7 @@
     <header class="topbar">
       <div>
         <div class="brand">上分黄历</div>
-        <div class="eyebrow">今日战局 · 娱乐占测</div>
+        <div class="eyebrow" id="battleEyebrow">今日战局 · 娱乐占测</div>
         <div class="date" id="todayText">正在起盘…</div>
         <div class="lunar-date" id="lunarText">农历正在换算…</div>
       </div>
@@ -64,7 +64,7 @@
     <section class="ai-fortune card" aria-labelledby="aiFortuneTitle">
       <div class="ai-fortune-head">
         <div>
-          <div class="eyebrow">AI READY · 今日上分签</div>
+          <div class="eyebrow" id="aiFortuneEyebrow">AI READY · 今日上分签</div>
           <h2 id="aiFortuneTitle">智能解读</h2>
         </div>
         <span class="ai-status" id="aiFortuneStatus">本地解读</span>
@@ -74,6 +74,7 @@
       <div class="ai-fortune-foot">
         <span id="aiFortuneSource">默认使用本地规则；接入安全后端后可切换为 Dify / 大模型解读。</span>
         <button class="ai-refresh-btn" id="aiRefreshBtn" type="button">重新解签</button>
+        <button class="ai-refresh-btn" id="aiCancelBtn" type="button" hidden>取消请求</button>
       </div>
       <div class="ai-privacy">隐私：AI 数据只包含日期、日柱、当前时辰、模式分数、黄金时辰与命宫地支；不会发送出生日期或出生时间。</div>
     </section>
@@ -87,7 +88,7 @@
     <section class="metaphysics card" aria-labelledby="metaphysicsTitle">
       <div class="metaphysics-head">
         <div>
-          <div class="eyebrow">传统历法 · 今日玄历</div>
+          <div class="eyebrow" id="metaphysicsEyebrow">传统历法 · 今日玄历</div>
           <div class="metaphysics-title" id="metaphysicsTitle">今日命理速览</div>
         </div>
         <div class="zodiac-badge" id="zodiacBadge">--</div>
@@ -127,7 +128,7 @@
     <section class="culture card">
       <div class="culture-mark">☯</div>
       <div>
-        <div class="culture-title">今天怎么看？</div>
+        <div class="culture-title" id="cultureTitle">今天怎么看？</div>
         <p>干支、五行、六合、六冲和命宫是传统文化素材；游戏模式与分数是为“上分黄历”设计的娱乐映射。</p>
       </div>
     </section>
@@ -153,7 +154,7 @@
         <label class="switch-row field">
           <span>
             <strong>启用命宫加成</strong>
-            <small>关闭后只看今日干支与时辰</small>
+            <small>关闭后只看所选日干支与时辰</small>
           </span>
           <input id="profileEnabled" class="toggle" type="checkbox" />
         </label>
@@ -179,6 +180,7 @@
       </div>
 
       <button class="save-btn" id="saveProfileBtn" type="button">保存命盘设置</button>
+      <button class="pill-btn" id="clearProfileBtn" type="button">清除本地命盘资料</button>
       <div class="modal-note">完整紫微斗数还涉及农历日期、年干、五行局与十四主星等。本版只取命宫地支作为娱乐个性化权重。</div>
     </section>
   </div>
@@ -187,8 +189,8 @@
     <section class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle">
       <div class="onboarding-seal">命</div>
       <div class="eyebrow">首次起盘 · 本命资料</div>
-      <h2 id="onboardingTitle">先安命盘，再看今日战局</h2>
-      <p class="onboarding-sub">为了让排位 / ARAM / TFT 的时辰判断带上你的本命权重，需要先填写出生日期和出生时间。资料只保存在当前浏览器，不会上传到服务器。</p>
+      <h2 id="onboardingTitle">先安命盘，再看黄历战局</h2>
+      <p class="onboarding-sub">为了让排位 / ARAM / TFT 的时辰判断带上你的本命权重，需要先填写出生日期和出生时间。出生日期与时间仅用于本地换算，只保存农历生月、出生时辰与启用状态，不会上传到服务器。</p>
 
       <div class="onboarding-form card">
         <label class="field">

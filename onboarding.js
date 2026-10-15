@@ -24,7 +24,7 @@
     if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(value)) return null;
     const hour = Number(String(value).split(':')[0]);
     if (!Number.isFinite(hour)) return null;
-    return hour === 23 ? 0 : Math.floor((hour + 1) / 2) % 12;
+    return window.HuangliCalendar.hourBranchIndex(hour);
   }
 
   function lunarMonthFromDate(value) {
@@ -84,11 +84,7 @@
     const profile = {
       enabled: true,
       lunarMonth,
-      birthHourIndex,
-      birthDate,
-      birthTime,
-      source: 'first-run-chart-gate',
-      updatedAt: new Date().toISOString()
+      birthHourIndex
     };
 
     try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); }
@@ -97,6 +93,8 @@
     document.body.classList.remove('chart-gated');
     $('onboardingModal').hidden = true;
     $('app').inert = false;
+    $('onboardingBirthDate').value = '';
+    $('onboardingBirthTime').value = '';
     document.dispatchEvent(new Event('reading-date-change'));
     $('profileBtn').focus();
   }
@@ -108,4 +106,10 @@
   $('onboardingSaveBtn')?.addEventListener('click', save);
   $('onboardingBirthDate')?.addEventListener('change', () => showError(''));
   $('onboardingBirthTime')?.addEventListener('change', () => showError(''));
+  document.addEventListener('profile-cleared', () => {
+    $('onboardingBirthDate').value = '';
+    $('onboardingBirthTime').value = '';
+    showError('');
+    openGate();
+  });
 })();

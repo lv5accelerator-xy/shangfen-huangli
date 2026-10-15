@@ -24,8 +24,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Verify calendar flows
-        run: node --test tests/calendar.test.cjs
+      - name: Use Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Check runtime syntax
+        run: |
+          node --check calendar.js
+          node --check app.js
+          node --check extras.js
+          node --check ai-fortune.js
+          node --check onboarding.js
+
+      - name: Verify all flows before deployment
+        run: node --test tests/*.test.cjs
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

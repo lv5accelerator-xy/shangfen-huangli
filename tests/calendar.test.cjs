@@ -10,7 +10,7 @@ function setup(profile, blocked=false) {
     return nodes.get(id);
   };
   const document = {getElementById:node,querySelectorAll:()=>[],body:{classList:{add(){},remove(){}},style:{}},addEventListener(k,f){events.set(k,[...(events.get(k)||[]),f]);},dispatchEvent(e){for(const f of events.get(e.type)||[])f();}};
-  const context = vm.createContext({window:{},document,Intl,Date,Event,setInterval(){},setTimeout(){},clearTimeout(){},localStorage:{getItem:k=>storage.get(k)||null,setItem(k,v){if(blocked)throw Error('blocked');storage.set(k,v);}}});
+  const context = vm.createContext({window:{addEventListener(){}},document,Intl,Date,Event,setInterval(){},setTimeout(){},clearTimeout(){},localStorage:{getItem:k=>storage.get(k)||null,setItem(k,v){if(blocked)throw Error('blocked');storage.set(k,v);}}});
   for(const file of ['calendar.js','app.js','extras.js','onboarding.js'])vm.runInContext(readFileSync(file,'utf8'),context);
   return {calendar:context.window.HuangliCalendar,node,storage};
 }
